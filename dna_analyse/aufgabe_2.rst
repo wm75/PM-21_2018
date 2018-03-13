@@ -25,4 +25,4 @@ Art ergibt::
 
 Überprüfe die Berechnungen Deines Programms z.B. mit dem `DNA Stats tool der
 Sequence Manipulation Suite
-<https://www.bioinformatics.org/sms2/dna_stats.html`__.
+<https://www.bioinformatics.org/sms2/dna_stats.html>`__.
