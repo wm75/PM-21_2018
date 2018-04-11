@@ -1,6 +1,11 @@
 Python 3 cheat sheet - Beginner's level
 =======================================
 
+.. admonition:: TO DO
+
+   - string formatting
+   - boolean operations and comparisons
+
 Arithmetics
 -----------
 
@@ -488,6 +493,56 @@ checked whether they accept the exception. If so, the corresponding block is
 executed and (if it doesn't raise an exception itself) normal code execution
 is resumed.
 
+.. admonition:: Types of exceptions
+
+   Some common *exceptions* that you should know and be able to interpret as a
+   beginner are::
+
+     TypeError   raised when code tries to use an object in a context,
+                 in which an object type different from that of your
+                 object is expected.
+                  
+                 Examples:
+                   
+                   10 + 'abc'  # cannot add objects of type int and str
+                   
+                   # only a sequence of strings can be joined
+                   ', '.join([1,2,3])
+                    
+     ValueError  raised when code tries to use an object of appropriate
+                 type, but with a value that cannot be dealt with in the
+                 current context.
+                 
+                 Example:
+                 
+                   # the int() function can convert a string to an
+                   # integer, but, for this to work, the string has to
+                   # be interpretable as an integer
+                   int('abc')
+                   
+                   # trying to get the position of a value in a sequence
+                   # when that value is not present
+                   
+                   ['a', 'b', 'c'].index('d')
+                   
+                   
+     IndexError  raised when code tries to access a position in a
+                 sequence, but the position is higher than the highest
+                 index in the sequence.
+                 
+                 Example:
+                 
+                   'short text'[10]
+
+
+     KeyError    similar to IndexError, but raised when trying to access
+                 an element by key (as for a dictionary).
+                 
+                 Example:
+                 
+                   d = {'a': 1, 'b': 2}
+                   d['c']
+
 
 Importing code from modules
 ---------------------------
@@ -497,7 +552,7 @@ Importing code from modules
    import math   # import the Python math module that is part of the stdlib
    
    # All objects defined in math can now be accessed through their
-   # identifiers preceeded with math. namespace indicator.
+   # identifiers preceeded with math. as the namespace indicator.
    print('PI:', math.pi)  # use it
 
 
@@ -629,34 +684,319 @@ They also support *indexing* and *slicing*:
    >>> txt[3:1:-1] # subsequence from pos 3 down to, but not including pos 1
    "'t"
 
+Individual container types define additional operations on their content in the
+form of *methods*. Here's a list of some of the most commonly used ones:
+
 .. _string:
    
 Strings
 ,,,,,,,
 
+.. code:: python3
 
+  # for a given string s
+  # the following methods give True/False answers
+  s.startswith(s2)  # does s start with the substring s2?
+  s.endswith(s2)    # does s end with the substring s2?
+  s.isalpha()  # are all characters in the string letters? 
+  s.isdigit()  # are all characters in the string digits?
+  s.isalnum()  # are all characters in the string letters or digits?
+  s.isspace()  # are all characters in the string whitespace characters?
+  s.isupper()  # are all letter characters in the string in upper case?
+  s.islower()  # are all letter characters in the string in lower case?
+   
+  # the following methods return a modified copy of s
+  s.replace(s1, s2)  # replace occurences of substring s1 in s with s2
+  s.strip()    # remove any whitespace characters from the ends of s
+  s.strip(s1)  # remove any of the characters in s1 from the ends of s
+  s.lstrip([s1])  # like s.strip with/without argument, but only from left end
+  s.rstrip([s1])  # -"- from right end
+  s.upper()    # convert letter characters to their upper case versions
+  s.lower()    # convert letter characters to their lower case versions
+  s.capitalize()  # 1st character to upper case, rest to lower case
+  s.title()    # 1st character of every word to upper, rest to lower case
+  s.swapcase() # turn lower into upper case and vice versa
+   
+  # these methods split s into a sequence of substrings
+  s.split()       # split s on whitespace; => list of non-whitespace substrings
+  s.split(sep)      # split s on sep; => list of in-between substrings
+  s.partition(sep)  # split s on sep; => 3-element tuple of (head, sep, tail)
+  
+  # this method joins the string elements of the provided container
+  # using s as glue
+  s.join(sequence_of_strings)  # e.g., ', '.join(['A', 'B', 'C']) => 'A, B, C'
+  
 .. _list:
 
 Lists
 ,,,,,
 
+.. code:: python3
+
+  # the following methods modify an existing list l
+  # by adding, removing or shuffling elements
+  # IMPORTANT: these methods do NOT return the result of their operation, but
+  # the special object None
+  l.append(x)       # append object x to the end of l
+  l.extend(seq)     # append all elements of sequence seq to l
+  l.insert(pos, x)  # insert object x into l at (the zero-based) position pos
+  l.remove(x)       # remove first occurence of object x from l
+  l.sort()          # sort l in place
+  l.reverse()       # reverse l in place
+
+  # other in-place operations that can be done on a list l are
+  # slice assignment and slice deletion. 
+  l[1:3] = seq     # replace elements 1 and 2 of l with the elements of seq
+  del l[-3:]       # delete the last three elemments from l
+  
+  # the pop() method removes an element from a list AND returns it
+  l.pop()      # remove the last element from l and return it
+  l.pop(pos)   # remove the element at position pos and return it
+  
 .. _tuple:
 
 Tuples
 ,,,,,,
+
+Although *tuples* are like *lists* in that they can store any number of
+elements of any type, they are also **immutable** and, thus, do not provide
+any methods to manipulate their content.
 
 .. _range:
 
 Ranges
 ,,,,,,
 
+A *range* is an evenly spaced sequence of integer numbers that is never stored
+in memory as a whole. Instead a *range* object only stores the **recipe** to
+generate its numbers and returns them on demand.
+
+*Ranges* are created using the built-in ``range()`` function:
+
+.. code:: python3
+
+   # range() works similar to slicing
+   
+   # range with just a stop argument gives a range from 0 up to (but not
+   # including) stop (i.e., a range of stop-many numbers 
+   r = range(10)  # numbers 0,1,2,3,4,5,6,7,8,9
+   
+   # with two arguments (start, stop) it gives a range from start up to (but
+   # not including) stop
+   r = range(2,12)   # numbers 2,3,4,5,6,7,8,9,10,11
+   
+   # with three arguments (start, stop, step) it gives a range including start,
+   # then every stepth number below stop
+   r = range(2,12,2)   # numbers 2,4,6,8,10
+   
+   # with start > stop and step < 0, a range representing a decreasing series
+   # of numbers is created. As always stop is NOT part of this series.
+   r = range(10,0,-1)  # numbers 10,9,8,7,6,5,4,3,2,1
+   
+The ``range()`` function creates a ``range`` object. To retrieve actual numbers
+from that object, you can:
+
+- use it in a ``for`` loop, *e.g.*:
+
+  .. code:: python3
+  
+     for n in range(10):
+         print(n)
+         
+- use indexing to retrieve a specific number:
+
+  .. code:: python3
+     
+     r = range(128, 32768)
+     x = r[3]
+     y = r[-5]
+     
+- turn the *range* or *slices* of it into a concrete sequence, *e.g.*:
+
+  .. code:: python3
+  
+     r = range(32768)
+     l = list(r)        # turn the whole range into a list of integers
+     t = tuple(r[::2])  # create a tuple from every second number in the range
+     
+  Note that slicing a *range* gives a new (sub-) ``range`` object.
+
+Like *tuples*, *ranges* are **immutable** once they have been created and don't
+offer any methods to manipulate their content. Instead, a ``range`` object has
+three *attributes* that let you predict the numbers you can get from it:
+
+.. code:: python3
+
+  r.start    # the first number contained in range r
+  r.stop     # the first number not contained in range r anymore
+  r.step     # the spacing between consecutive numbers in range r
+  
 .. _set:
 
 Sets
 ,,,,
 
+A set is an unordered collection of unique elements (like a mathematical set).
+It is **mutable** and provides methods for adding and removing elements.
+
+.. code:: python3
+
+  # The following methods change the content of a set s.
+  # They do NOT return the result of their operations, but the None object.
+  s.add(x)       # add an object x to s; if x is already part of s, do nothing
+  s.discard(x)   # remove object x from s; if x is not in s, do nothing
+  s.remove(x)    # like discard(), but if x is not in s, raise a *KeyError*
+  s.update(s2)   # add the content of set s2 to s; ignore elements already in s
+  
+Sets also offer a number of operations that correspond directly to operations
+you could perform with mathematical sets:
+
+.. code:: python3
+
+  # Examples of set operations
+  pets = {'dog', 'hamster', 'tortoise', 'goldfish'}
+  mammals = {'mouse', 'dog', 'pig', 'rat', 'gorilla', 'hamster'}
+  
+  animals = pets | mammals                    # union
+  pets_that_are_mammals = pets & mammals      # intersection
+  pets_that_are_not_mammals = pets - mammals  # difference
+  mammals_that_are_not_pets = mammals - pets  # difference
+  pets ^ mammals  # symmetric difference (set of items unique to one set)
+  
 .. _dictionary:
 
 Dictionaries
 ,,,,,,,,,,,,
 
+.. code:: python3
+
+  # Adding and accessing elements to a dictionary is usually NOT done through
+  # methods, but through indexing like for *lists*, where the keys represent
+  # the index.
+  d = {}  # create an empty dictionary
+  d['Germany'] = 'Berlin'  # add Germany to a dictionary of capitals
+  d['Germany']   # get values by their keys => 'Berlin'
+  d['France']    # trying to access a non-existing key raises a *KeyError*
+  d['France'] = 'Lyon'    # add the entry for France
+  # reassigning to an existing key means the old value gets overwritten
+  d['France'] = 'Paris'   # better
+  del d['France']         # remove the entry for France
+  d['France']             # yes, it is gone
+  
+  # The get() method lets you retrieve values without risking a KeyError.
+  d.get('Italy', '?')  # access entry 'Italy'; return '?' if it doesn't exist
+  
+  # There is only one *method* that modifies the content
+  # of an existing dictionary d and does NOT return the result of the
+  # operation, but the None object instead.
+  d.update(d2)  # add key/value pairs found in d2 to d
+  # if any d2 keys exist in d, their value in d2 will overwrite the value in d
+  
+  # These methods remove an element from d AND return it:
+  d.pop(key)  # remove the element stored under key from d and return its value
+  d.popitem(key, value)  # remove a key/value pair from d; return it as a tuple
+  
+  # These methods help you retrieve some of the content from d.
+  # They return special view objects that are most useful with for loops.
+  d.values()  # return a view on the values of d
+  d.items()   # return a view on the key/value pairs of d
+  # use them like this:
+  for value in d.values():
+      # do something with the value here
+  for key, value in d.items():
+      # do something with key and value here
+  # there is also a keys() method, but it's usually simpler to do this:
+  for key in d:
+      # do something with key here
+      
+
+Files
+-----
+
+Use the built-in ``open()`` function to open text files from Python:
+
+.. code:: python3
+
+   # try to open a file named 'some_file' in the current working directory
+   # for reading:
+   f = open('some_file')    # raises FileNotFoundError if file doesn't exist
+   f = open('some_file', 'r')  # same, but more explicit ('r' means read-only)
+   f = open('path/to/some_file')  # open file in another folder (macOS, Linux)
+   f = open(r'Documents\some_file')  # Windows (use backslash in paths)
+   
+   # try to open a file named 'some_file' for writing
+   # IMPORTANT: will create the file if it does not exist, but if it exists,
+   # **deletes** the old content without asking for confirmation (and there is
+   # no undo!!)
+   f = open('some_file', 'w') # 'w' for write-access; may raise PermissionError
+   
+   # try to open a file named 'some_file' and appending to it
+   # => existing old content is preserved (although you will not be able to
+   # read it in this mode)
+   f = open('some_file', 'a') # 'a' for append; may raise PermissionError
+   
+The ``open()`` function returns a ``file object`` (assigned to ``f`` in the
+examples above) which has methods for reading from or writing to the file.
+
+.. code:: python3
+
+   f = open('some_file')
+   content = f.read()  # Read the whole(!) content of the file into one string
+   f.close()           # Close the file; ALWAYS do this when you are done
+   
+   f = open('some_file')
+   f.read(80)          # read the first 80 characters from the file
+   # file object methods always continue their operations from the last
+   # position that was accessed (think of a magnetic tape)
+   f.read()            # read the rest
+   # if the last position was the end of the file further reading operations
+   # return an empty string
+   f.read()   # => ''; use f.seek(n) to rewind to the nth character in the file
+   # no write access because we are in read-only mode
+   f.write()  # raises io.UnsupportedOperation
+   
+Other options to read from a file:
+
+- Use the ``readline()`` method to read the next line from a file
+- Use the ``readlines()`` method to read all lines from a file.
+  This method returns a *list* of *strings* (one per line).
+  You can provide the number of lines to read as an argument.
+- Use the ``file object`` in a for loop to retrieve lines one by one, like in:
+
+  .. code:: python3
+  
+     for line in f:
+         if 'PASSWORD' in line:
+             print(line)
+             
+Files opened in ``'w'`` or ``'a'`` mode have file objects without read methods,
+but with corresponding write methods instead:
+
+.. code:: python3
+
+   f.write('some text')   # write a string to a file
+   f.writelines(seq_of_strings)   # write a sequence of strings to a file
+   
+Both of these methods will not add line breaks for you so you have to use the
+newline character ``\n`` in your strings explicitly to insert them.
+
+For write operations, in particular, it is crucial that you close the file
+after you are done because without that your data may not actually get written
+to the file, but only be scheduled for writing.
+
+Because it is easy to forget closing files, Python offers this idiom for
+opening a file for use in only a specific block of code. When execution leaves
+the block, the file will be closed automatically.
+
+.. code:: python3
+
+   with open('some_file', 'w') as f:
+       # within this block we have write access to 'some_file'
+       # this would have worked with 'r' as well
+       f.write('some text')
+       
+   # once we get here, Python will have closed the file for us
+   f.write('more text')  # will raise ValueError because of closed file
+
+Use this preferentially to avoid problems!
+  
