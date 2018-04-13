@@ -1,7 +1,7 @@
 Versucht Euch an der Lösung der folgenden, relativ einfachen Probleme
 aus dem `Project Euler <https://projecteuler.net/>`__:
 
-- `Largest palindrome product <https://projecteuler.net/problem=4`__
+- `Largest palindrome product <https://projecteuler.net/problem=4>`__
 
   Hinweis: Wie aufwendig die Lösung ist, hängt stark davon ab, wierum Ihr das
   Problem angeht. Ihr könntet prinzipiell entweder:
@@ -9,7 +9,7 @@ aus dem `Project Euler <https://projecteuler.net/>`__:
   - alle palindromischen Zahlen finden und nacheinander prüfen, ob sie das
     Produkt zweier dreistelliger Zahlen sind, oder
   - alle Produkte zweier dreistelliger Zahlen berechnen und prüfen, ob sie
-    palindromische Zahlen sind
+    palindromische Zahlen sind.
     
   Wie meistens beim Programmieren lohnt es sich, beide Möglichkeiten z.B.
   auf Papier kurz zu skizzieren, und dann nur die einfachere Variante
