@@ -1,10 +1,5 @@
-Python 3 cheat sheet - Beginner's level
-=======================================
-
-.. admonition:: TO DO
-
-   - string formatting
-   - boolean operations and comparisons
+A compact guide to Python 3 - Beginner's level
+==============================================
 
 Arithmetics
 -----------
@@ -42,7 +37,89 @@ Arithmetics
     >>> 4 * 3.75 -1
     14.0
 
-    
+
+Logic operations
+----------------
+
+``True`` and ``False`` are Python's way to express the logical outcome of
+comparisons and yes/no questions.
+
+.. code:: python3
+
+   >>> 5 > 3   # is 5 greater than 3?
+   True
+   
+   >>> 5 < 3   # is 5 less than 3?
+   False
+   
+   >>> 3 >= 3  # is 3 greater than or equal 3?
+   True
+   
+   >>> 3 <= 3  # is 3 less than or equal 3?
+   True
+   
+   >>> 3 == 3  # does 3 equal 3?
+   True
+   
+   >>> 5 != 3  # does 5 NOT equal 3?
+   True
+   
+.. admonition:: Caveats:
+
+   The two-character comparison operators ``>=``, ``<=``, ``==`` and ``!=``
+   have to be written *exactly* like this. Spaces between the characters,
+   using them in a different order or combining them in other ways all cause
+   ``SyntaxError``.
+   
+   The test for equality is done with the two-character ``==`` operator because
+   the single ``=`` is used for assignments, *e.g.*,
+   
+   .. code:: python3
+   
+      >>> x = 5   # assign the integer 5 to x
+      >>> x == 5  # test that x now equals 5
+      True
+      
+Python can also evaluate the truthi-/falsiness of any object itself, *i.e.*,
+without a comparison. This may sound weird, but is often very useful and
+follows very simple, clear rules:
+
+Any built-in Python object is considered truthy with the exception of:
+
+   - ``None``   (the special object used to represent nothingsness in Python)
+   - ``False``  (should be obvious; how could ``False`` be ``True``?)
+   - any zero numbers (``0``, ``0.0``, *etc.*)
+   - any sequence or collection of objects with zero length
+     (this includes the empty string ``''`` and the empty list ``[]`` for
+     example)
+
+To trigger the truthi-/falsiness evaluation of an object, you can either
+
+- use the built-in ``bool()`` function on the object, e.g.,
+
+  .. code:: python3
+  
+     >>> bool(3)   # 3 is a number and it's not zero so ...
+     True
+     
+     >>> bool([])  # an empty list has zero elements
+     False
+     
+- use the object with ``if``, but without a comparison operator (in this case
+  Python will call ``bool()`` for you to decide what to do). For example:
+  
+  .. code:: python3
+  
+     if data:
+        # do something with the data here
+        print(data)
+     else:
+        print('There is no data to process.')
+  
+  will print *There is no data to process.* whenever data is ``None``,
+  ``False``, some sort of zero, or has zero elements.
+  
+
 Literals
 --------
 
@@ -88,7 +165,7 @@ Objects can be created from literal representations, specifically:
 Conversion between object types
 -------------------------------
 
-Integer number objects can be generated from other types using the ``int``
+Integer number objects can be generated from other types using the ``int()``
 function, *e.g.* :
 
 .. code:: python3
@@ -102,12 +179,13 @@ function, *e.g.* :
        int("15.0")
    ValueError: invalid literal for int() with base 10: '15.0'
    
-   >>> int(15.3)    # integer from floating point number (decimal digits get truncated)
+   >>> int(15.3)   # integer from floating point (decimal digits get truncated)
    15
    
+-----
 
 Floating point number objects can be generated from other types using the
-``float`` function:
+``float()`` function:
 
 .. code:: python3
 
@@ -119,9 +197,44 @@ Floating point number objects can be generated from other types using the
    
    >>> float(15)          # float object from integer
    15.0
+
+-----
+
+`Strings`_ can be generated from almost any object in Python. The ``str()``
+function is a bit different from the other conversion functions because it asks
+the object it is given to *represent* itself as a `string`_ and the object has
+any freedom to do so. This makes ``str()`` very flexible, but sometimes also
+surprising for beginners.
+
+.. code:: python3
+
+   >>> str(3)
+   '3'
    
-Lists, tuples and sets can be interconverted or generated from other sequence
-types using correspondingly named functions:
+   >>> str(3.1415)
+   '3.1415'
+
+   >>> str(False)
+   'False'
+   
+   >>> str(None)
+   'None'
+   
+   >>> str([1,2,3,4,5])
+   '[1, 2, 3, 4, 5]'
+   
+   >>> str(['a', 'b', 'c', 'd'])   # this does NOT concatenate
+   "['a', 'b', 'c', 'd']"
+
+If you want to concatenate strings stored in a `list`_ or other
+*sequence*, use the `join method of strings`_ instead.
+
+`String formatting`_ offers more control over string representations.
+
+-----
+   
+`Lists`_, `tuples`_ and `sets`_ can be interconverted or generated from other
+*sequence* types using correspondingly named functions:
 
 .. code:: python3
 
@@ -139,16 +252,18 @@ types using correspondingly named functions:
    
    >>> set('Hello World') # set from a string (duplicate removal)
    {'H', 'W', 'd', ' ', 'l', 'o', 'r', 'e'}
+
+-----
    
-Dictionaries can be generated from sequences of pairs of items:
+`Dictionaries`_ can be generated from sequences of pairs of items:
 
 .. code:: python3
 
    >>> dict([("a", 1), ("b", 2), ("c", 3)])  # from a list of 2-element tuples
    {'a': 1, 'b': 2, 'c': 3}
    
-To convert a dictionary to a list, tuple or set, you have to decide if you want
-just the keys, the values, or both converted:
+To convert a `dictionary`_ to a `list`_, `tuple`_ or `set`_, you have to decide
+if you want just the *keys*, the *values*, or both converted:
 
 .. code:: python3
 
@@ -692,10 +807,11 @@ form of *methods*. Here's a list of some of the most commonly used ones:
 Strings
 ,,,,,,,
 
+For a given string ``s`` the following methods give ``True`` / ``False``
+answers:
+
 .. code:: python3
 
-  # for a given string s
-  # the following methods give True/False answers
   s.startswith(s2)  # does s start with the substring s2?
   s.endswith(s2)    # does s end with the substring s2?
   s.isalpha()  # are all characters in the string letters? 
@@ -705,7 +821,10 @@ Strings
   s.isupper()  # are all letter characters in the string in upper case?
   s.islower()  # are all letter characters in the string in lower case?
    
-  # the following methods return a modified copy of s
+The following methods return a modified copy of ``s``:
+
+.. code:: python3
+
   s.replace(s1, s2)  # replace occurences of substring s1 in s with s2
   s.strip()    # remove any whitespace characters from the ends of s
   s.strip(s1)  # remove any of the characters in s1 from the ends of s
@@ -717,13 +836,21 @@ Strings
   s.title()    # 1st character of every word to upper, rest to lower case
   s.swapcase() # turn lower into upper case and vice versa
    
-  # these methods split s into a sequence of substrings
+These methods split ``s`` into a *sequence* of substrings:
+
+.. code:: python3
+
   s.split()       # split s on whitespace; => list of non-whitespace substrings
   s.split(sep)      # split s on sep; => list of in-between substrings
   s.partition(sep)  # split s on sep; => 3-element tuple of (head, sep, tail)
   
-  # this method joins the string elements of the provided container
-  # using s as glue
+.. _join method of strings:
+
+This method joins the string elements of the provided *container* using ``s``
+as glue:
+
+.. code:: python3
+
   s.join(sequence_of_strings)  # e.g., ', '.join(['A', 'B', 'C']) => 'A, B, C'
   
 .. _list:
@@ -863,6 +990,7 @@ you could perform with mathematical sets:
   mammals_that_are_not_pets = mammals - pets  # difference
   pets ^ mammals  # symmetric difference (set of items unique to one set)
   
+.. _dict:
 .. _dictionary:
 
 Dictionaries
@@ -909,6 +1037,16 @@ Dictionaries
   for key in d:
       # do something with key here
       
+
+String Formatting
+-----------------
+
+.. code:: python3
+
+   format(16/6, '.2f')
+   
+   '16€ / 6 = {0:.2f}€'.format(16/6)
+   
 
 Files
 -----
