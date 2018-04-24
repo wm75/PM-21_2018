@@ -732,16 +732,45 @@ investigate their content:
    # only if the items in the container support addition in the arithmetic sense
    sum(c)  # the sum of all items in the container
    
-   # built-in functions that accept a container and return an iterator
-   # for use, e.g., in a for loop
-   
-   # return an iterator over (index, item) tuples
-   enumerate(container1, container2, ...)
-   # return an iterator over tuples of zipped elements of all containers, i.e.,
-   # (item1_container1, item1_container2, ...), (item2_container1, ...), ...
+Container types can be used in ``for`` loops to retrieve their elements one by
+one using this simple, general pattern:
 
-**Ordered** containers (strings, lists, tuples, ranges) also support these
-additional operations:
+.. code:: python3
+
+   for item in container:
+       # do something with the item here
+       pass
+       
+There are two built-in functions, ``enumerate()`` and ``zip()``, that return
+specialized iterators over container items, which can also be used in ``for``
+loops:
+
+.. code:: python3
+   
+   # enumerate returns an iterator over (index, item) tuples.
+   # This iterator can be used in a for loop like this:
+   for index, item in enumerate(container):
+       # do something with index and item here
+       pass
+   # if you don't want the index values to start at 0, you can specify a
+   # different start value as the second argument to enumerate
+   for index, item in enumerate(container, 1):
+       # 1-based indexing
+       pass
+           
+   # zip returns an iterator over tuples of zipped elements of all containers
+   # passed to it, i.e., something like this
+   # (item1_container1, item1_container2, ...), (item2_container1, ...), ...
+   # The iterator returns as many tuples as there are elements in the
+   # shortest container.
+   # In a for loop it can be used like this:
+   for container1_item, container2_item in zip(container1, container2):
+       # do something with the zipped items here
+       pass
+
+**Ordered** containers (strings, lists, tuples, ranges), also called
+*sequences*, support all general container operations above, but, in addition,
+offer:
 
 .. code:: python3
 
@@ -749,9 +778,9 @@ additional operations:
    c.count(item)  # return the number of times item occurs in c
    
    # return an iterator over the elements of the container in reversed order
-   reversed(c)
+   reversed(c)  # use e.g. in a for loop
    
-   # concatenation
+   # concatenation (NOT available for ranges)
    c1 + c2  # concatenation of containers of same type
    c * n    # generate a new container by concatenating it n times
    
