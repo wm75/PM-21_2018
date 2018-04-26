@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 # ein einfaches Nim-ähnliches Spiel
 
 import random    # wird in der Funktion zahl_waehlen benötigt
