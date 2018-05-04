@@ -54,6 +54,7 @@ abgenommen:
      Positivkontrollen als positiv und das Vorliegen einer Tuberkuloseinfektion
      als wahrscheinlich.
   
+-----
 
 Testauswertung
 --------------
@@ -114,6 +115,55 @@ mit Angaben zum durchgeführten Test.
 
 .. _Beispiel einer Ergebnisdatei: qft_1.csv
 
+Datennormierung
+...............
+
+Die OD-Werte der 8 Standardproben werden als Grundlage für die Umrechnung der
+Patientenprobenwerte in IU/ml benutzt. Dazu wird die Gleichung der sich aus
+den Standardproben ergebenden Regressionsgeraden (Standardkurve) ermittelt und
+zur Umrechnung der Patientenwerte verwendet.
+
+Testergebnisbewertung
+.....................
+
+Die Ergebnisse des Tests werden für jeden Patienten (ausgehend von den 4
+zugehörigen Proben) nach folgendem Entscheidungsbaum bewertet:
+
++--------+-----------+-----------+----------+--------------+
+|  X-N   |    X-1    |    X-2    |   X-M    | Testergebnis |
++========+===========+===========+==========+==============+
+|        |           |           |          |              |
+|        | Δ >= 0.35 |           |          |              |
+|        | und       | beliebig  |          |              |
+|        | %Δ >= 25  |           |          |              |
+|        |           |           |          |              |
+|        +-----------+-----------+ beliebig | POSITIV      |
+|        |           |           |          |              |
+|        |           | Δ >= 0.35 |          |              |
+|        | beliebig  | und       |          |              |
+| <= 8.0 |           | %Δ >= 25  |          |              |
+|        |           |           |          |              |
+|        +-----------+-----------+----------+--------------+
+|        |                       |          |              |
+|        |                       | Δ >= 0.5 | NEGATIV      |
+|        |                       |          |              |
+|        | Δ < 0.35 oder %Δ < 25 +----------+--------------+
+|        |                       |          |              |
+|        |                       | Δ < 0.5  |              |
+|        |                       |          |              |
++--------+-----------------------+----------+ Unschlüssig  |
+|                                           |              |
+| > 8.0                                     |              |
+|                                           |              |
++-------------------------------------------+--------------+
+
+Dabei entspricht:
+
+**Δ** dem Unterschied in IU/ml zwischen einer Probe und der Negativkontrolle,
+**%Δ** dem prozentualen Unterschied zwischen einer Probe und der
+Negativkontrolle
+
+-----
 
 Projektziel
 -----------
