@@ -7,7 +7,7 @@ import random
 
 # set up the three caves
 caves = [1,2,3]
-# initialze counters for the two possible outcomes
+# initialize counters for the two possible outcomes
 counter_andromeda_in_original_cave = 0
 counter_andromeda_in_third_cave = 0
 
