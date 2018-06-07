@@ -1,5 +1,6 @@
-Vervollständige das Programm DNA_Analyse.py so, dass sich ein Dialog dieser
-Art ergibt::
+Vervollständige das Programm
+`DNA_Analyse.py <https://github.com/wm75/PM-21_2018/blob/master/dna_analyse/DNA_Analyse.py>`_
+so, dass sich ein Dialog dieser Art ergibt::
 
 	Gib eine DNA-Sequenz ein: MDAGLVCTSGAPRG
 	
