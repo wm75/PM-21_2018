@@ -59,7 +59,7 @@ module (``-m pip``) to update itself (``install pip --update``).
    task bar, right-click *Command Prompt* in the context menu, then select
    (left-click) *Run as administrator*, as shown in the screenshot below.
    
-   .. image:: source/cmd_as_admin.png
+   .. image:: cmd_as_admin.png
 
 
 Install spyder
