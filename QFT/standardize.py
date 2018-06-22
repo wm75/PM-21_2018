@@ -11,7 +11,6 @@ STANDARDS = [
     ('S2', 1),
     ('S1', 4)
     ]
-
     
 QUALITY_OK = 0
 HIGH_BACKGROUND = 1
@@ -67,10 +66,22 @@ def transform_to_concs(od_data, layout):
     std_mean_od = np.mean(std_od, axis=1)
     std_stdev_od = np.std(std_od, axis=1)
     status = QUALITY_OK
+    if std_mean_od[0] > 0.15:
+        status += HIGH_BACKGROUND
+    if std_mean_od[-1] < 0.6:
+        status += LOW_SENSITIVITY
+    if np.any(np.abs(std_mean_od[:2] - std_od[:2].T) > 0.04):
+        status += UNRELIABLE_LOW
+    if np.any(100*std_stdev_od[2:]/std_mean_od[2:] > 15):
+        status += UNRELIABLE_HIGH
+    slope, intercept, r = stats.linregress(
+        np.log(std_mean_od[1:]),
+        np.log([conc for sn, conc in STANDARDS[1:]])
+        )[:3]
+    if r < 0.98:
+        status += POOR_CORRELATION
+    conc_data = math.exp(intercept)*od_data**slope
 
-    # TO DO:
-    # lots of stuff
-    
     return conc_data, status
 
 
@@ -78,10 +89,9 @@ def get_std_data(od_data, layout):
     """Return std OD values from all data sorted by known concentration
     in ascending order."""
     
-    return np.array([
-        # TO DO:
-        # populate this array
-        ])
+    return np.array(
+        [od_data[layout == sn] for sn, conc in STANDARDS]
+        )
 
 
 if __name__ == '__main__':
